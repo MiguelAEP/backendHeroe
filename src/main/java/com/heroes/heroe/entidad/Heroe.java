@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @AllArgsConstructor
@@ -28,11 +29,13 @@ public class Heroe {
     @Column(nullable = false)
     private String poder;
 
-    @Lob
-    private byte [] imagen;
+
+    private String imagen;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organizacion_id")
     private Organizacion organizacion;
+
+
 
 }

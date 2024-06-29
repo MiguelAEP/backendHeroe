@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/heroe")
@@ -32,19 +33,44 @@ public class HeroeController {
         return heroeService.findAll();
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<Heroe> saveHeroe(@RequestBody Heroe heroe ,
-                                           @RequestParam("file") MultipartFile imagen)  {
-        System.out.println("HOLA");
-        try {
-            byte[] imagenBytes= imagen.getBytes();
-            System.out.println("imagenBytes"+imagenBytes);
-        }catch (IOException e){
-            e.getMessage();
+    @GetMapping("/{id}")
+    public Heroe getHeroForID(@PathVariable Long id){
+        Optional<Heroe> heroeSearched = heroeService.getHeroeByID(id);
+        if(heroeSearched.isEmpty()){
+            throw new RuntimeException("id no existe");
         }
-//imagen.transferTo(dest);
-
-        return ResponseEntity.ok(heroe);
+        return heroeSearched.get();
     }
+
+    @PostMapping("/createHeroe")
+    public ResponseEntity<Heroe> createHeroe(@RequestParam("name") String name,
+                                             @RequestParam("description") String description,
+                                             @RequestParam("poder") String poder,
+                                             @RequestParam("imagen") MultipartFile imagen,
+                                             @RequestParam("organizacion") Long id   ) throws IOException {
+
+        String fileName = imagen.getOriginalFilename();//muestra el nombre de la imagen
+        System.out.println("fileName"+fileName);
+        String filePath = uploadDir + File.separator + fileName; // aca se almacenara la imagen
+
+        System.out.println("filePath"+filePath);
+        File dest = new File(filePath); // crea un nuevo file y lo guarda a la ruta
+        imagen.transferTo(dest);
+        System.out.println("dest"+dest);
+
+        Heroe heroe = new Heroe();
+        heroe.setName(name);
+        heroe.setDescription(description);
+        heroe.setPoder(poder);
+        heroe.setImagen("/uploads/" + fileName);
+
+        Organizacion organizacionBuscado = organizacionService.getOrganizacionByID(id).orElseThrow();
+        heroe.setOrganizacion(organizacionBuscado);
+
+        Heroe savedHeroe = heroeService.createHeroe(heroe);
+        return ResponseEntity.ok(savedHeroe);
+    }
+
+
 
 }
