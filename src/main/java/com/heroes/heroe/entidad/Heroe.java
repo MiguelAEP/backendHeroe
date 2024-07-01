@@ -1,5 +1,7 @@
 package com.heroes.heroe.entidad;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.heroes.organizacion.entidad.Organizacion;
 import jakarta.persistence.*;
@@ -28,7 +30,6 @@ public class Heroe {
 
     @Column(nullable = false)
     private String poder;
-
 
     private String imagen;
 

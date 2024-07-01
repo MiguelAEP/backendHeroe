@@ -20,6 +20,12 @@ public class OrganizacionServiceIMP implements OrganizacionService{
     }
 
     @Override
+    public Integer countOrganization() {
+        Long cant = organizacionRepository.countAllOrganizaciones();
+        return Math.toIntExact(cant);
+    }
+
+    @Override
     public Organizacion createOrganizacion(Organizacion organizacion) {
         return organizacionRepository.save(organizacion);
     }

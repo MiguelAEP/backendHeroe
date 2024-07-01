@@ -1,5 +1,6 @@
 package com.heroes.organizacion.entidad;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.heroes.heroe.entidad.Heroe;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,8 @@ public class Organizacion {
 
     @Column(nullable = false)
     private String name;
+
+    private String imagen;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "organizacion")
     private List<Heroe> heroes = new ArrayList<>();

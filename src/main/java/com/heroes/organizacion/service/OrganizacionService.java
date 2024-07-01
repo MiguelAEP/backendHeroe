@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface OrganizacionService {
 
     public List<Organizacion> findAll();
+
+    public Integer countOrganization();
     public Organizacion createOrganizacion(Organizacion organizacion);
 
     public Organizacion updateOrganizacion(Organizacion organizacion);
